@@ -1,0 +1,25 @@
+---
+kind: pipeline
+type: docker
+name: hydra-identity-manager-client-build
+
+steps:
+  - name: build
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: docker.pkg.github.com/wlp2s0/hydra-identity-manager-client/client
+      context: .
+      dockerfile: ./.docker/Dockerfile
+      registry: docker.pkg.github.com
+      auto_tag: true
+      target: production
+
+trigger:
+  event:
+  - tag
+  - promote
+  - rollback
