@@ -6,6 +6,9 @@ name: hydra-identity-manager-client-build
 steps:
   - name: build
     image: plugins/docker
+    environment:
+      REACT_APP_BASE_URL:
+        from_secret: api_url
     settings:
       username:
         from_secret: docker_username
@@ -17,6 +20,8 @@ steps:
       registry: docker.pkg.github.com
       auto_tag: true
       target: production
+      build_args_from_env:
+        - REACT_APP_BASE_URL
 
 trigger:
   event:

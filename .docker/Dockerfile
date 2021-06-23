@@ -1,23 +1,29 @@
+# build stage
+FROM node:lts-alpine as build
 
-# pull official base image
-FROM node:15.10.0-alpine
+# Env vars
+ARG REACT_APP_BASE_URL
+ENV REACT_APP_BASE_URL $REACT_APP_BASE_URL
 
-# set working directory
 WORKDIR /app
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+COPY package*.json ./
 
-# install app dependencies
-COPY package.json ./
-RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g --silent
+RUN npm install
 
-# add app
-COPY . ./
+COPY . .
 
 RUN npm run build
-RUN npm install -g serve
 
-# start app
-CMD ["npm", "run","prod"]
+# production stage
+FROM nginx:stable-alpine as production
+
+# Copy nginx configuration
+COPY ./.docker/ /etc/nginx/
+
+# Copy build
+COPY --from=build /app/dist /var/www/mattiacampagna.com/public
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
