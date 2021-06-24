@@ -18,6 +18,8 @@ steps:
       auto_tag: true
       auto_tag_suffix: local
       target: production
+      build_args:
+        REACT_APP_BASE_URL: "http://localhost:5002/api"
 
 trigger:
   event:
