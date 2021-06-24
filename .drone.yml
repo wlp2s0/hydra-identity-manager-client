@@ -29,6 +29,37 @@ trigger:
 ---
 kind: pipeline
 type: docker
+name: hydra-identity-manager-client-build-beta
+
+steps:
+  - name: build
+    image: plugins/docker
+    environment:
+      REACT_APP_BASE_URL:
+        from_secret: beta_api_url
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: docker.pkg.github.com/wlp2s0/hydra-identity-manager-client/client
+      context: .
+      dockerfile: ./.docker/Dockerfile
+      registry: docker.pkg.github.com
+      auto_tag: true
+      auto_tag_suffix: beta
+      target: production
+      build_args_from_env:
+        - REACT_APP_BASE_URL
+
+trigger:
+  event:
+  - tag
+  - promote
+  - rollback
+---
+kind: pipeline
+type: docker
 name: hydra-identity-manager-client-build-production
 
 steps:
@@ -36,7 +67,7 @@ steps:
     image: plugins/docker
     environment:
       REACT_APP_BASE_URL:
-        from_secret: api_url
+        from_secret: production_api_url
     settings:
       username:
         from_secret: docker_username
