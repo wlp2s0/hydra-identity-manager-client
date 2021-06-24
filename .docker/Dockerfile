@@ -23,7 +23,7 @@ COPY ./.docker/ /etc/nginx/
 
 # Copy build
 COPY --from=build /app/build /var/www/mattiacampagna.com/public
-COPY --from=build /app/.env /var/www/mattiacampagna.com/public/.env
+#COPY --from=build /app/.env /var/www/mattiacampagna.com/public/.env
 
 EXPOSE 80
 
