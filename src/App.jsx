@@ -3,6 +3,7 @@ import ConsentPage from "./pages/Consent/ConsentPage";
 import Home from "./pages/Home/Home"
 import LoginPage from "./pages/Login/LoginPage"
 import './App.less'
+import LogoutPage from "./pages/Logout/LogoutPage";
 
 const App = () => {
   return (
@@ -15,6 +16,9 @@ const App = () => {
       </Route>
       <Route exact path="/consent">
         <ConsentPage/>
+      </Route>
+      <Route exact path="/logout">
+        <LogoutPage/>
       </Route>
     </Switch>
 
